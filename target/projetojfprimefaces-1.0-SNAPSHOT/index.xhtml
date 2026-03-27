@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Pessoa"></h:outputText>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="frmList">
+            <h:panelGroup id="pngList">
+                <p:growl id="growl" showDetail="true" />
+                <p:fieldset toggleable="true">
+                    <p:dataTable id="datalist" value="#{pessoaController.pessoaList}" var="item" selectionMode="single" selection="#{pessoaController.selected}"
+                        widgetVar="datalistPessoaWidgetVar"
+                        rowKey="#{item.id}"
+                        paginator="true"
+                        rows="3"
+                        rowsPerPageTemplate="5,10,50,100"
+                        emptyMessage="Nenhuma pessoa cadastrada...">
+
+                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+
+                <p:outputLabel value="Email: " />
+                <p:outputLabel value="#{pessoaController.selected.email}" />
+
+                <p:outputLabel value="Idade (anos):"/>
+                <p:outputLabel value="#{pessoaController.selected.idade}" />
+
+                <p:outputLabel value="É fumante? " />
+                <p:outputLabel value="#{pessoaController.selected.fumante}"/>
+
+                <p:outputLabel value="Cidadania: " />
+                <p:outputLabel value="#{pessoaController.selected.cidadania}" />
+
+                <p:outputLabel value="Observação: " />
+                <p:outputLabel value="#{pessoaController.selected.observacao}"/>
+
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
