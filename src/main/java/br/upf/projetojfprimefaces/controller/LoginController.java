@@ -9,7 +9,7 @@ import jakarta.inject.Named;
 
 import java.io.Serializable;
 
-@Named(value = "Logincontroller")
+@Named("loginController")
 @SessionScoped
 public class LoginController implements Serializable {
 

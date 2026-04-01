@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Named(value = "pessoaController")
+@Named("pessoaController")
 @SessionScoped
 public class PessoaController implements Serializable {
 
