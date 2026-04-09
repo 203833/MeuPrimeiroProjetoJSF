@@ -2,6 +2,7 @@ package br.upf.projetojfprimefaces.controller;
 
 import br.upf.projetojfprimefaces.entity.PessoaEntity;
 import jakarta.annotation.PostConstruct;
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
@@ -12,6 +13,9 @@ import java.io.Serializable;
 @Named("loginController")
 @SessionScoped
 public class LoginController implements Serializable {
+
+    @EJB
+    private br.upf.projetojfprimefaces.PessoaFacade ejbFacade;
 
     public LoginController() {
     }
@@ -36,7 +40,8 @@ public class LoginController implements Serializable {
     }
 
     public String validarLogin() {
-        if (pessoa.getEmail().equals("usuario@gmail.com") && pessoa.getSenha().equals("123")) {
+        PessoaEntity pessoaDB = ejbFacade.buscarPorEmail(pessoa.getEmail(), pessoa.getSenha());
+        if ((pessoaDB != null && pessoaDB.getNome() != null)) {
             return "/index.xhtml?faces-redirect=true";
         } else {
             FacesMessage fm = new FacesMessage(

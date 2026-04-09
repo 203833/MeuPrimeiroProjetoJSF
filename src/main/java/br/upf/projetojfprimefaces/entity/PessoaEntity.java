@@ -51,6 +51,20 @@ public class PessoaEntity implements Serializable{
     @Column(name = "observacao")
     private String observacao;
 
+    public Date getDatahorareg() {
+        return datahorareg;
+    }
+
+    public void setDatahorareg(Date datahorareg) {
+        this.datahorareg = datahorareg;
+    }
+
+    @Basic(optional = false)
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "datahorareg")
+    private Date datahorareg;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "senha")

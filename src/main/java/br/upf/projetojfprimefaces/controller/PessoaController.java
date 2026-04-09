@@ -8,7 +8,9 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Named("pessoaController")
@@ -131,11 +133,6 @@ public class PessoaController implements Serializable {
         }
     }
 
-    public void adicionarPessoa() {
-        persist(PessoaController.PersistAction.CREATE,
-                "Registro incluído com sucesso!");
-    }
-
     public void editarPessoa() {
         persist(PessoaController.PersistAction.UPDATE,
                 "Registro alterado com sucesso!");
@@ -144,6 +141,12 @@ public class PessoaController implements Serializable {
     public void deletarPessoa() {
         persist(PessoaController.PersistAction.DELETE,
                 "Registro excluído com sucesso!");
+    }
+
+    public void adicionarPessoa() {
+        Date datahoraAtual = new Timestamp((System.currentTimeMillis()));
+        pessoa.setDatahorareg(datahoraAtual);
+        persist(PersistAction.CREATE, "Registro adicionado com sucesso!");
     }
 
 }

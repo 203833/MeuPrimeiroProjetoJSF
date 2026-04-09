@@ -13,7 +13,7 @@ import java.util.List;
 @Stateless
 public class PessoaFacade extends AbstractFacade<PessoaEntity> {
 
-    @PersistenceContext(unitName = "ProjetojfprimefacesPU")
+    @PersistenceContext(unitName = "my_persistence_unit")
     private EntityManager em;
 
     @Override
@@ -40,5 +40,22 @@ public class PessoaFacade extends AbstractFacade<PessoaEntity> {
 
         }
     return entityList;
+    }
+
+    public PessoaEntity buscarPorEmail(String email, String senha) {
+        PessoaEntity pessoa = new PessoaEntity();
+        try {
+            Query query = getEntityManager()
+                    .createQuery("SELECT p FROM PessoaEntity p WHERE p.email = :email AND p.senha = :senha");
+            query.setParameter("email", email);
+            query.setParameter("senha", senha);
+
+            if (!query.getResultList().isEmpty()) {
+                pessoa = (PessoaEntity) query.getSingleResult();
+            }
+        } catch (Exception e) {
+            System.out.println("Erro: " + e);
+        }
+    return pessoa;
     }
 }

@@ -34,6 +34,16 @@
                             <h:outputText value="#{item.id}"/>
                         </p:column>
 
+                        <p:column width="6%" sortBy="#{item.datahorareg}" filterBy="#{item.datahorareg}">
+                            <f:facet name="header">
+                                <h:outputText value="Registro"></h:outputText>
+                            </f:facet>
+                            <h:outputText value="#{item.datahorareg}">
+                                <f:convertDateTime pattern="dd/MM/YYYY HH:mm" timeZone="America/Sao_Paulo">
+                                </f:convertDateTime>
+                            </h:outputText>
+                        </p:column>
+
                         <p:column width="10%" sortBy="#{item.nome}" filterBy="#{item.nome}">
                             <f:facet name="header">
                                 <h:outputText value="Nome"/>
@@ -176,6 +186,11 @@
                     <p:outputLabel id="oplId" value="ID" for="iptId"/>
                     <p:inputText id="iptId" size="10" label="ID" disabled="true"
                                  value="#{pessoaController.selected.id}" />
+
+                    <p:outputLabel id="oplDatahorareg" for="ipmDatahorareg" value="Registro"/>
+                        <p:inputText id="ipmDatahorareg" value="#{pessoaController.selected.datahorareg}" disabled="true">
+                            <f:convertDateTime pattern="dd/MM/YYYY" timeZone="America/Sao_Paulo"/>
+                        </p:inputText>
 
                     <p:outputLabel id="oplNome" value="Nome:" for="iptNome"/>
                     <p:inputText id="iptNome" size="40" label="Nome" required="true"
