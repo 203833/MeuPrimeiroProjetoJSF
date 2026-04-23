@@ -1,34 +1,32 @@
 package br.upf.projetojfprimefaces.controller;
 
 import br.upf.projetojfprimefaces.entity.PessoaEntity;
+import br.upf.projetojfprimefaces.facade.PessoaFacade;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-@Named("pessoaController")
+@Named(value = "pessoaController")
 @SessionScoped
 public class PessoaController implements Serializable {
 
-    @EJB
-    private br.upf.projetojfprimefaces.PessoaFacade ejbFacade;
+    @Inject
+    private PessoaFacade ejbFacade;
 
-    public PessoaController() {
-    }
-
-    //objeto que representa uma pessoa
     private PessoaEntity pessoa = new PessoaEntity();
-    //objeto que representa uma lista de pessoas
     private List<PessoaEntity> pessoaList = new ArrayList<>();
 
     private PessoaEntity selected;
 
-    //atributo que será utilizado no momento da seleção da linha na datatable
     public PessoaEntity getSelected() {
         return selected;
     }
@@ -58,9 +56,21 @@ public class PessoaController implements Serializable {
         return pessoa;
     }
 
-    public static void addSuccessMessage(String msg) {
-     FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
-     FacesContext.getCurrentInstance().addMessage("successInfo", facesMessage);
+    public void adicionarPessoa() {
+        Date datahoraAtual = new Timestamp(System.currentTimeMillis());
+        pessoa.setDatahorareg(datahoraAtual);
+        persist(PessoaController.PersistAction.CREATE, 
+                "Registro incluído com sucesso!");
+    }
+
+    public void editarPessoa() {
+        persist(PessoaController.PersistAction.UPDATE, 
+                "Registro alterado com sucesso!");
+    }
+
+    public void deletarPessoa() {
+        persist(PessoaController.PersistAction.DELETE, 
+                "Registro excluído com sucesso!");
     }
 
     public static void addErrorMessage(String msg) {
@@ -68,29 +78,9 @@ public class PessoaController implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
 
-    /**
-     * Método responsável por gerar um valor para cada registro inserido
-     *
-     *
-     * @return
-     */
-    private int gerarId() {
-        int id = 1;
-        if (!pessoaList.isEmpty()) {
-            id = pessoaList.size() + 1;
-        }
-        return id;
-    }
-
-    /**
-     * Método responsávle por exibir a mensagem no formulário
-     */
-    private void exibirMensagem() {
-        //criando mensagem para exibir...
-        String msg = "Contato adicionado: " + pessoa.getNome();
-        //capturando mensagem criada...
-        FacesMessage fm = new FacesMessage(msg);
-        FacesContext.getCurrentInstance().addMessage(msg, fm);
+    public static void addSuccessMessage(String msg) {
+        FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg);
+        FacesContext.getCurrentInstance().addMessage("successInfo", facesMsg);
     }
 
     public static enum PersistAction {
@@ -99,16 +89,21 @@ public class PessoaController implements Serializable {
         UPDATE
     }
 
+
     private void persist(PersistAction persistAction, String successMessage) {
         try {
             if (null != persistAction) {
                 switch (persistAction) {
                     case CREATE:
                         ejbFacade.createReturn(pessoa);
+                        break;
                     case UPDATE:
                         ejbFacade.edit(selected);
+                        selected = null;
+                        break;
                     case DELETE:
                         ejbFacade.remove(selected);
+                        selected = null;
                         break;
                     default:
                         break;
@@ -129,21 +124,6 @@ public class PessoaController implements Serializable {
         } catch (Exception ex) {
             addErrorMessage(ex.getLocalizedMessage());
         }
-    }
-
-    public void adicionarPessoa() {
-        persist(PessoaController.PersistAction.CREATE,
-                "Registro incluído com sucesso!");
-    }
-
-    public void editarPessoa() {
-        persist(PessoaController.PersistAction.UPDATE,
-                "Registro alterado com sucesso!");
-    }
-
-    public void deletarPessoa() {
-        persist(PessoaController.PersistAction.DELETE,
-                "Registro excluído com sucesso!");
     }
 
 }

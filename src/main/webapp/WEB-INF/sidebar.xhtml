@@ -16,7 +16,9 @@
         <div class="layout-menu-container">
             <h:form id="menuform">
                 <pm:menu widgetVar="ManhattanMenuWidget">
-                    <p:menuitem id="mnuPessoa" value="Pessoa" icon="pi pi-fw pi-home" outcome="index.xhtml"/>
+                    <p:menuitem id="mnuPessoa" value="Pessoa" icon="pi pi-fw pi-home" outcome="/admin/pessoa.xhtml"/>
+                    <p:menuitem id="mnuCidade" value="Cidade" icon="pi pi-fw pi-home" outcome="/admin/cidade.xhtml"/>
+                    <p:menuitem id="mnuSair" value="Sair" action="#{loginController.logout()}" icon="pi pi-fw pi-home"/>
                 </pm:menu>
             </h:form>
         </div>
